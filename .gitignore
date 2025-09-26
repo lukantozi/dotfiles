@@ -1,0 +1,7 @@
+# Neovim
+.config/nvim/plugin/packer_compiled.lua
+.config/nvim/.netrwhist
+.config/nvim/undodir/
+.config/nvim/backup/
+.config/nvim/swap/
+
