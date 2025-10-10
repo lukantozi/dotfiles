@@ -1,0 +1,58 @@
+/* ====== knobs you’ll tweak ====== */
+@define-color bg       #0a0a0a;
+@define-color surface  #101013;
+@define-color overlay  #17171b;
+@define-color text     #e6e6ee;
+@define-color muted    #8e8ea0;
+@define-color accent   #3e8fb0;
+
+/* ====== window ====== */
+window {
+  background-color: alpha(@bg, 0.94);  /* transparency: 1.0 = solid */
+  border-radius: 16px;                 /* <— round the corners */
+  border: 1px solid alpha(@text, .08);
+  padding: 14px;                       /* outer padding */
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+/* container spacing */
+#outer-box { padding: 6px; }
+#inner-box { margin-top: 6px; }
+
+/* ====== search field ====== */
+#input {
+  background: @surface;
+  color: @text;
+  border: 1px solid alpha(@text,.10);
+  border-radius: 12px;                 /* <— search field roundness */
+  padding: 5px 12px;                   /* <— height knob: reduce/increase */
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 12.5pt;                   /* <— size knob; also affects height */
+  caret-color: @accent;
+}
+
+/* placeholder / prompt text color */
+#input > * { color: @text; }
+
+/* ====== rows ====== */
+#entry {
+  background: transparent;
+  color: @text;
+  padding: 8px 10px;                   /* <— row height knob */
+  margin: 2px 0;                       /* <— space between rows */
+  border-radius: 10px;                 /* <— row corner roundness */
+}
+
+#entry:selected {
+  background: @overlay;                /* selection color */
+  color: @text;
+}
+
+/* icon spacing */
+#img { padding-right: 10px; }
+
+/* make secondary text slightly muted */
+#text { color: @text; }
+
+
+
