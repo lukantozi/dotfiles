@@ -1,0 +1,16 @@
+* {
+  bg:     #0b0b10ff;  /* pitchy black like your setup */
+  fg:     #e0def4ff;  /* text */
+  accent: #f2cdcdff;  /* rose accent */
+  muted:  #1a1b26ff;  /* panels (matches your waybar) */
+  selbg:  #1f2230ff;  /* selection */
+  selfg:  #e0def4ff;
+  br:     #2a2e3eff;  /* subtle border */
+}
+window { background-color: @bg; border: 1px; border-color: @br; padding: 10px; }
+mainbox, listview { background-color: transparent; }
+inputbar { background-color: @muted; padding: 6px 10px; border-radius: 10px; }
+prompt, entry { foreground: @fg; }
+element { background-color: transparent; text-color: @fg; padding: 6px 10px; }
+element selected { background-color: @selbg; text-color: @selfg; border-radius: 8px; border: 1px; border-color: @accent; }
+element-icon { size: 1.1em; }

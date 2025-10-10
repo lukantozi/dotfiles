@@ -1,0 +1,8 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: false;
+    icon-theme: "Papirus-Dark";
+    font: "JetBrainsMono Nerd Font 16";
+}
+/* Tell rofi which theme to load (use ABSOLUTE path) */
+@theme "~/.config/rofi/mytheme.rasi"

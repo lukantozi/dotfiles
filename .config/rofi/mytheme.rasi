@@ -1,0 +1,17 @@
+/* ~/.config/rofi/mytheme.rasi */
+@import "/usr/share/rofi/themes/DarkBlue.rasi"
+
+/* Main color palette override */
+* {
+    background:  rgba(42,36,56,95%);    /* Main window background */
+    foreground: #ffffff;                  /* Text color */
+    border-color: rgba(112,177,112,80%);  /* Borders in green tone */
+    separatorcolor: rgba(112,177,112,80%);
+    
+    selected-normal-background: rgba(112,177,112,100%); /* Slightly lighter highlight */
+    selected-normal-foreground: #e3e0ea;
+    
+    active-background: #a17fd0;
+    urgent-background: #a17fd0;
+}
+
