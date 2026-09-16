@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/tmux-sessionizer/tmux-sessionizer.conf"
+query="${1-}"
+
+ROOTS_NO_RECURSE=(
+    "$HOME"
+)
+
+ROOTS_RECURSE=(
+    "$HOME"
+)
+
+[[ -f "$CONF" ]] && source "$CONF"
+
+roots_no_recurse=$(
+    for dir in "${ROOTS_NO_RECURSE[@]}"; do
+        [[ -d "$dir" ]] && printf 'D\t%s\n' "$dir"
+    done
+)
+
+roots_recurse=$(
+    for dir in "${ROOTS_RECURSE[@]}"; do
+        [[ -d "$dir" ]] && printf 'D\t%s\n' "$dir"
+    done
+)
+
+subdirs=$(
+    ((${#ROOTS_RECURSE[@]})) || exit 0
+    fd -t d -d 2 . "${ROOTS_RECURSE[@]}" 2>/dev/null |
+        awk '{print "D\t" $0}'
+)
+
+files=$(
+    ((${#ROOTS_RECURSE[@]})) || exit 0
+    fd -t f -d 4 . "${ROOTS_RECURSE[@]}" 2>/dev/null |
+        awk '{print "F\t" $0}'
+)
+
+candidates=$(printf '%s\n%s\n%s\n%s\n' \
+    "$roots_no_recurse" \
+    "$roots_recurse" \
+    "$subdirs" \
+    "$files")
+
+selection=$(
+    printf '%s\n' "$candidates" |
+        fzf \
+            --prompt='> ' \
+            -q "${query:-}" \
+            --delimiter=$'\t' \
+            --with-nth=2 \
+            --preview '
+                if [ {1} = D ]; then
+                    ls -lha --group-directories-first --color=always -- {2} 2>/dev/null ||
+                        echo "(no directory)"
+                elif command -v bat >/dev/null 2>&1; then
+                    bat --style=numbers --color=always --line-range=:400 -- {2} 2>/dev/null
+                else
+                    head -n 200 -- {2} 2>/dev/null ||
+                        echo "(cannot preview file)"
+                fi
+            ' \
+            --preview-window=right,50%
+) || exit 0
+
+kind=$(cut -f1 <<<"$selection")
+path=$(cut -f2- <<<"$selection")
+
+target_dir=""
+open_file=""
+
+if [[ "$kind" == "D" ]]; then
+    target_dir=$(realpath -- "$path")
+else
+    open_file=$(realpath -- "$path")
+    target_dir=$(dirname "$open_file")
+fi
+
+git_root=""
+if git -C "$target_dir" rev-parse --show-toplevel >/dev/null 2>&1; then
+    git_root=$(git -C "$target_dir" rev-parse --show-toplevel)
+fi
+
+session_name=$(basename "${git_root:-$target_dir}" |
+    tr -c '[:alnum:]_-' '_')
+
+if tmux has-session -t "=${session_name}" 2>/dev/null; then
+    if [[ -n "${TMUX-}" ]]; then
+        tmux switch-client -t "$session_name"
+    else
+        tmux attach-session -t "$session_name"
+        exit 0
+    fi
+else
+    if [[ -n "$open_file" ]]; then
+        tmux new-session -d -s "$session_name" -c "$target_dir" \
+            "nvim \"$open_file\""
+    else
+        tmux new-session -d -s "$session_name" -c "$target_dir"
+    fi
+
+    if [[ -n "${TMUX-}" ]]; then
+        tmux switch-client -t "$session_name"
+    else
+        tmux attach-session -t "$session_name"
+        exit 0
+    fi
+fi
+
+if [[ -n "$open_file" ]]; then
+    window_index=$(tmux new-window -P -F "#{window_index}" \
+        -t "$session_name" \
+        -n "$(basename "$open_file")" \
+        -c "$target_dir" \
+        "nvim \"$open_file\"")
+
+    tmux select-window -t "${session_name}:${window_index}"
+fi
