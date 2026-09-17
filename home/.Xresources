@@ -6,6 +6,7 @@ XTerm*foreground: #e4e4ef
 XTerm*cursorColor: #e4e4ef
 
 XTerm*scrollBar: false
+XTerm*cursorBlink: false
 
 XTerm*selectToClipboard: true
 

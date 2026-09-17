@@ -67,6 +67,7 @@ bindsym $mod+Shift+e exec swaymsg exit
 bar {
     position bottom
     status_command i3status
+    tray_output none
 }
 
 exec_always xrdb -merge ~/.Xresources
