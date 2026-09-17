@@ -1,7 +1,6 @@
 XTerm*faceName: Iosevka
-XTerm*faceSize: 14
+#include "/home/styx/.Xresources.local"
 
-! dark background and light text.
 XTerm*background: #181818
 XTerm*foreground: #e4e4ef
 XTerm*cursorColor: #e4e4ef
@@ -12,5 +11,4 @@ XTerm*selectToClipboard: true
 
 XTerm*saveLines: 10000
 
-XTerm*VT100.Translations: #override \
-    Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
+XTerm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
