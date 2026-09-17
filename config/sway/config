@@ -19,6 +19,7 @@ bindsym $mod+q kill
 bindsym $mod+c exec brave
 bindsym $mod+o exec xournalpp
 bindsym $mod+y exec discord
+bindsym $mod+F8 exec ~/.local/bin/screenshot-area
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
