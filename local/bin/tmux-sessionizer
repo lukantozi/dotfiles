@@ -9,7 +9,9 @@ ROOTS_NO_RECURSE=(
 )
 
 ROOTS_RECURSE=(
-    "$HOME"
+    "$HOME/code"
+    "$HOME/code/systems-lab"
+    "$HOME/code/rpi4-baremetal-os"
 )
 
 [[ -f "$CONF" ]] && source "$CONF"
