@@ -30,13 +30,13 @@ roots_recurse=$(
 
 subdirs=$(
     ((${#ROOTS_RECURSE[@]})) || exit 0
-    fd -t d -d 2 . "${ROOTS_RECURSE[@]}" 2>/dev/null |
+    fd -t d -d 4 . "${ROOTS_RECURSE[@]}" 2>/dev/null |
         awk '{print "D\t" $0}'
 )
 
 files=$(
     ((${#ROOTS_RECURSE[@]})) || exit 0
-    fd -t f -d 4 . "${ROOTS_RECURSE[@]}" 2>/dev/null |
+    fd -t f -d 6 . "${ROOTS_RECURSE[@]}" 2>/dev/null |
         awk '{print "F\t" $0}'
 )
 
@@ -89,34 +89,40 @@ session_name=$(basename "${git_root:-$target_dir}" |
     tr -c '[:alnum:]_-' '_')
 
 if tmux has-session -t "=${session_name}" 2>/dev/null; then
+    if [[ -n "$open_file" ]]; then
+        window_index=$(tmux new-window -d -P -F "#{window_index}" \
+            -t "$session_name" \
+            -n "$(basename "$open_file")" \
+            -c "$target_dir" \
+            "nvim \"$open_file\"")
+    else
+        window_index=$(tmux new-window -d -P -F "#{window_index}" \
+            -t "$session_name" \
+            -n "$(basename "$target_dir")" \
+            -c "$target_dir")
+    fi
+
     if [[ -n "${TMUX-}" ]]; then
         tmux switch-client -t "$session_name"
     else
         tmux attach-session -t "$session_name"
-        exit 0
     fi
+
+    tmux select-window -t "${session_name}:${window_index}"
+
 else
     if [[ -n "$open_file" ]]; then
         tmux new-session -d -s "$session_name" -c "$target_dir" \
+            -n "$(basename "$open_file")" \
             "nvim \"$open_file\""
     else
-        tmux new-session -d -s "$session_name" -c "$target_dir"
+        tmux new-session -d -s "$session_name" -c "$target_dir" \
+            -n "$(basename "$target_dir")"
     fi
 
     if [[ -n "${TMUX-}" ]]; then
         tmux switch-client -t "$session_name"
     else
         tmux attach-session -t "$session_name"
-        exit 0
     fi
-fi
-
-if [[ -n "$open_file" ]]; then
-    window_index=$(tmux new-window -P -F "#{window_index}" \
-        -t "$session_name" \
-        -n "$(basename "$open_file")" \
-        -c "$target_dir" \
-        "nvim \"$open_file\"")
-
-    tmux select-window -t "${session_name}:${window_index}"
 fi
