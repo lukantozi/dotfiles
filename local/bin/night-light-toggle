@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if pgrep -x gammastep >/dev/null; then
+    pkill -x gammastep
+else
+    gammastep -O 3200 >/dev/null 2>&1 &
+fi

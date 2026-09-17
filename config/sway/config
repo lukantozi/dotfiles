@@ -20,6 +20,7 @@ bindsym $mod+c exec brave
 bindsym $mod+o exec xournalpp
 bindsym $mod+y exec discord
 bindsym $mod+F8 exec ~/.local/bin/screenshot-area
+bindsym $mod+F7 exec ~/.local/bin/night-light-toggle
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -71,3 +72,4 @@ bar {
 }
 
 exec_always xrdb -merge ~/.Xresources
+include ~/.config/sway/config.local
