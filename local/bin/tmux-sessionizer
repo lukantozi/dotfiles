@@ -85,10 +85,24 @@ if git -C "$target_dir" rev-parse --show-toplevel >/dev/null 2>&1; then
     git_root=$(git -C "$target_dir" rev-parse --show-toplevel)
 fi
 
-session_name=$(basename "${git_root:-$target_dir}" |
+session_root="${git_root:-$target_dir}"
+
+session_name=$(basename "${session_root:-$target_dir}" |
     tr -c '[:alnum:]_-' '_')
 
 if tmux has-session -t "=${session_name}" 2>/dev/null; then
+    existing_root=$(tmux show-option -qv -t "$session_name" \
+        @sessionizer_root 2>/dev/null || true)
+
+    if [[ -z "$open_file" && "$target_dir" == "$existing_root" ]]; then
+        if [[ -n "${TMUX-}" ]]; then
+            tmux switch-client -t "$session_name"
+        else
+            tmux attach-session -t "$session_name"
+        fi
+        exit 0
+    fi
+
     if [[ -n "$open_file" ]]; then
         window_index=$(tmux new-window -d -P -F "#{window_index}" \
             -t "$session_name" \
@@ -119,6 +133,7 @@ else
         tmux new-session -d -s "$session_name" -c "$target_dir" \
             -n "$(basename "$target_dir")"
     fi
+    tmux set-option -t "$session_name" @sessionizer_root "$session_root"
 
     if [[ -n "${TMUX-}" ]]; then
         tmux switch-client -t "$session_name"
