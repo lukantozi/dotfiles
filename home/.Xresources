@@ -7,6 +7,9 @@ XTerm*cursorColor: #e4e4ef
 
 XTerm*scrollBar: false
 XTerm*cursorBlink: false
+XTerm.vt100.metaSendsEscape: true
+XTerm.vt100.backarrowKey: false
+XTerm.ttyModes: erase ^?
 
 XTerm*selectToClipboard: true
 
