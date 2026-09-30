@@ -3,10 +3,25 @@ XTerm*faceName: Iosevka
 
 XTerm*background: #181818
 XTerm*foreground: #e4e4ef
-XTerm*cursorColor: #e4e4ef
+XTerm*color0: #484848
+XTerm*color1: #c73c3f
+XTerm*color2: #73c936
+XTerm*color3: #ffdd33
+XTerm*color4: #96a6c8
+XTerm*color5: #9e95c7
+XTerm*color6: #95a99f
+XTerm*color7: #e4e4ef
+XTerm*color8: #484848
+XTerm*color9: #c73c3f
+XTerm*color10: #73c936
+XTerm*color11: #ffdd33
+XTerm*color12: #96a6c8
+XTerm*color13: #9e95c7
+XTerm*color14: #95a99f
+XTerm*color15: #e4e4ef
 
 XTerm*scrollBar: false
-XTerm*cursorBlink: false
+XTerm*cursorBlink: true
 XTerm.vt100.metaSendsEscape: true
 XTerm.vt100.backarrowKey: false
 XTerm.ttyModes: erase ^?
