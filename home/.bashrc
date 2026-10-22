@@ -5,7 +5,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-export MANPAGER='nvim +Man!'
+export MANPAGER='nvim +Man! -c "setlocal number relativenumber"'
+export MANWIDTH=80
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
