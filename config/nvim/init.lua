@@ -33,6 +33,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.statusline = "%f %m %r %=%-14.(%l,%c%) %P"
+vim.opt.splitbelow = true
 -- vim.opt.colorcolumn = 100
 
 vim.g.clipboard = {
