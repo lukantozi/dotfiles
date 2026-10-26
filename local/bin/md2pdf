@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eu
+
+file=${1:?"Usage: md2pdf FILE.md"}
+output="${file%.*}.pdf"
+
+pandoc "$file" -o "$output" --pdf-engine=weasyprint
