@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+query=$(wmenu -p 'search:' </dev/null) || exit 0
+[[ -n ${query//[[:space:]]/} ]] || exit 0
+
+url=$(python -c '
+import sys
+from urllib.parse import urlencode
+print("https://search.brave.com/search?" + urlencode({"q": sys.argv[1]}))
+' "$query") || exit 1
+
+swaymsg '[app_id="^brave-browser$"] focus' >/dev/null
+brave "$url"

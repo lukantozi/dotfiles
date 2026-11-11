@@ -21,6 +21,7 @@ bindsym $mod+e exec $menu
 bindsym $mod+c exec brave
 bindsym $mod+o exec xournalpp
 bindsym $mod+y exec discord
+bindsym $mod+b exec ~/.local/bin/web-search
 bindsym $mod+p exec ~/.local/bin/night-light-toggle # FN7
 floating_modifier $mod normal
 bindsym $mod+Shift+c reload
