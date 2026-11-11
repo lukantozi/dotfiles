@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+export LC_ALL=C
+
+wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle || exit 1
+state=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@) || exit 1
+
+if [[ $state == *"[MUTED]"* ]]; then
+    message="Microphone muted"
+else
+    message="Microphone unmuted"
+fi
+
+notify-send -a microphone -t 2000 \
+    -h string:x-canonical-private-synchronous:microphone \
+    "$message"

@@ -1,54 +1,26 @@
 vim.g.netrw_banner = 0
-vim.opt.guicursor = ""
-
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:block-blinkwait300-blinkon200-blinkoff150,r-cr:hor20"
-
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.opt.ttimeoutlen = 10
-
 vim.opt.smartindent = true
-
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.breakindent = true
-
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
-
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
-
 vim.opt.termguicolors = true
 vim.o.winborder = "rounded"
-
-vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.isfname:append("@-@")
-vim.opt.updatetime = 50
+--vim.opt.scrolloff = 8
 vim.opt.statusline = "%f %m %r %=%-14.(%l,%c%) %P"
 vim.opt.splitbelow = true
--- vim.opt.colorcolumn = 100
-
-vim.g.clipboard = {
-    name = "xclip",
-    copy = {
-        ["+"] = "xclip -selection clipboard -in",
-        ["*"] = "xclip -selection primary -in",
-    },
-    paste = {
-        ["+"] = "xclip -selection clipboard -out",
-        ["*"] = "xclip -selection primary -out",
-    },
-    cache_enabled = 0,
-}
-
 vim.g.mapleader = " "
 
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -71,10 +43,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
--- =================================
--- ============= remap =============
 local map = vim.keymap.set
-
 map("n", "<leader>pv", vim.cmd.Ex)
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
@@ -94,22 +63,16 @@ map("v", "K", ":m '<-2<CR>gv=gv")
 map("v", "<", "<gv", { desc = "Indent left and reselect" })
 map("v", ">", ">gv", { desc = "Indent right and reselect" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>")
-
--- =================================
--- =========== quickfix ============
 map("n", "<leader>q", function()
     local qf_open = #vim.fn.filter( vim.fn.getwininfo(), "v:val.quickfix") > 0
 
     if qf_open then vim.cmd("cclose") else vim.cmd("copen") end
 end, { desc = "Toggle quickfix", })
-
 map("n", "]q", "<cmd>cnext<CR>", { desc = "Next quickfix", })
 map("n", "[q", "<cmd>cprev<CR>", { desc = "Prev quickfix", })
 map("n", "]Q", "<cmd>clast<CR>", { desc = "Last quickfix", })
 map("n", "[Q", "<cmd>cfirst<CR>", { desc = "First quickfix", })
 
--- =================================
--- ========== lazy.nvim ============
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then

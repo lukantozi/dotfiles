@@ -1,0 +1,66 @@
+general {
+    output_format = "i3bar"
+    colors = true
+	color_good = "#00FF00"
+	color_degraded = "#FFCC00"
+	color_bad = "#FF3333"
+    interval = 5
+}
+
+order += "wireless _first_"
+order += "cpu_usage"
+order += "cpu_temperature 0"
+order += "memory"
+order += "disk /"
+order += "battery all"
+order += "tztime local"
+
+cpu_usage {
+    format = "CPU %usage"
+	degraded_threshold = 80
+	max_threshold = 95
+}
+
+cpu_temperature 0 {
+    format = "TEMP %degreesC"
+    path = "/sys/class/hwmon/hwmon5/temp1_input"
+}
+
+memory {
+    format = "MEM %used | %available"
+    memory_used_method = "memavailable"
+    unit = "Gi"
+    decimals = 1
+    threshold_degraded = "15%"
+    threshold_critical = "5%"
+}
+
+disk "/" {
+    format = "SSD %avail"
+    prefix_type = "custom"
+	low_threshold = 10
+	threshold_type = "percentage_avail"
+}
+
+wireless _first_ {
+    format_up = "WiFi %essid %bitrate"
+    format_down = "WiFi down"
+}
+
+battery all {
+    format = "%status %percentage"
+    format_down = "BAT unavailable"
+    status_chr = "CHG"
+    status_bat = "BAT"
+    status_full = "FULL"
+    status_idle = "BAT"
+    status_unk = "BAT"
+    last_full_capacity = true
+    format_percentage = "%.0f%s"
+	low_threshold = 15
+	threshold_type = "percentage"
+}
+
+tztime local {
+    format = "%a %d %b %H:%M"
+}

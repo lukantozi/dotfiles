@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+export LC_ALL=C
+
+device=/org/freedesktop/UPower/devices/DisplayDevice
+previous=none
+
+while sleep 30; do
+    info=$(upower -i "$device") || continue
+
+    state=$(awk '/^[[:space:]]*state:/ {print $2}' <<< "$info")
+    level=$(awk '/^[[:space:]]*warning-level:/ {print $2}' <<< "$info")
+    percent=$(awk '/^[[:space:]]*percentage:/ {print $2}' <<< "$info")
+
+    if [[ $state != discharging ]]; then
+        previous=none
+        continue
+    fi
+
+    [[ $level == "$previous" ]] && continue
+    previous=$level
+
+    case "$level" in
+        low)
+            notify-send -a battery -u normal -t 10000 \
+                -h string:x-canonical-private-synchronous:battery \
+                "Battery low — $percent" "Connect the charger."
+            ;;
+        critical)
+            notify-send -a battery -u critical -t 0 \
+                -h string:x-canonical-private-synchronous:battery \
+                "Battery critical — $percent" \
+                "Connect the charger. Automatic hibernation is set to 2%."
+            ;;
+    esac
+done

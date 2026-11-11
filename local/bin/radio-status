@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+export LC_ALL=C
+
+sleep 0.4
+
+wifi=$(nmcli radio wifi) || exit 1
+
+if [[ $wifi == enabled ]]; then
+    message="Wi-Fi radio enabled"
+else
+    message="Wi-Fi radio disabled"
+fi
+
+notify-send -a radio -t 2000 \
+    -h string:x-canonical-private-synchronous:radio \
+    "$message"
