@@ -13,3 +13,5 @@ alias grep='grep --color=auto'
 alias vim='nvim'
 
 PS1='[\u@\[\033[01;31m\]\h\[\033[00m\] \W]\$ '
+
+[[ -f ~/.bashrc.local ]] && source ~/.bashrc.local
