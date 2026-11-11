@@ -21,8 +21,10 @@ bindsym $mod+e exec $menu
 bindsym $mod+c exec brave
 bindsym $mod+o exec xournalpp
 bindsym $mod+y exec discord
+bindsym $mod+u exec zathura
 bindsym $mod+b exec ~/.local/bin/web-search
 bindsym $mod+p exec ~/.local/bin/night-light-toggle # FN7
+bindsym $mod+Shift+t exec ~/.local/bin/toggle-nvim-theme
 floating_modifier $mod normal
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'

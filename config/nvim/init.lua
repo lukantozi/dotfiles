@@ -155,3 +155,4 @@ require("lazy").setup({
 })
 
 vim.cmd.colorscheme("gruber-darker")
+-- vim.cmd.colorscheme("shine")

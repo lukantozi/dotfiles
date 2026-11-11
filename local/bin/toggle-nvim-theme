@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+from pathlib import Path
+import os
+import re
+import subprocess
+
+root = Path.home() / ".config/nvim"
+pattern = re.compile(
+    r'^([ \t]*)(--[ \t]*)?(vim\.cmd\.colorscheme\("(gruber-darker|shine)"\))[ \t]*$',
+    re.MULTILINE,
+)
+
+matches = []
+for path in root.rglob("*.lua"):
+    text = path.read_text()
+    lines = list(pattern.finditer(text))
+    if len(lines) == 2 and {m[4] for m in lines} == {"gruber-darker", "shine"}:
+        matches.append((path, text, lines))
+
+if len(matches) != 1:
+    raise SystemExit("Expected exactly one Lua file containing both theme lines.")
+
+path, text, lines = matches[0]
+if sum(m[2] is None for m in lines) != 1:
+    raise SystemExit("Expected one active theme and one commented theme.")
+
+light = any(m[4] == "gruber-darker" and m[2] is None for m in lines)
+
+path.write_text(pattern.sub(
+    lambda m: m[1] + ("" if m[2] else "-- ") + m[3],
+    text,
+))
+
+subprocess.run(
+    [
+        "pkill",
+        "-USR2" if light else "-USR1",
+        "-u", str(os.getuid()),
+        "-x", "foot",
+    ],
+    check=False,
+)
